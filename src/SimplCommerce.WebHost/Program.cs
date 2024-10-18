@@ -22,11 +22,11 @@ using SimplCommerce.Module.Localization.Extensions;
 using SimplCommerce.Module.Localization.TagHelpers;
 using SimplCommerce.WebHost.Extensions;
 
-// var builder = WebApplication.CreateBuilder(args);
-// ConfigureService();
-// var app = builder.Build();
-// Configure();
-// app.Run();
+var builder = WebApplication.CreateBuilder(args);
+ConfigureService();
+var app = builder.Build();
+Configure();
+app.Run();
 
 void ConfigureService() 
 {
