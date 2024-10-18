@@ -28,58 +28,58 @@ var app = builder.Build();
 Configure();
 app.Run();
 
-void ConfigureService() 
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    builder.Configuration.AddEntityFrameworkConfig(options =>
-    {
-        options.UseSqlServer(connectionString);
-    });
+// void ConfigureService() 
+// {
+//     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//     builder.Configuration.AddEntityFrameworkConfig(options =>
+//     {
+//         options.UseSqlServer(connectionString);
+//     });
 
-    GlobalConfiguration.WebRootPath = builder.Environment.WebRootPath;
-    GlobalConfiguration.ContentRootPath = builder.Environment.ContentRootPath;
+//     GlobalConfiguration.WebRootPath = builder.Environment.WebRootPath;
+//     GlobalConfiguration.ContentRootPath = builder.Environment.ContentRootPath;
 
-    builder.Services.AddModules();
-    builder.Services.AddCustomizedDataStore(builder.Configuration);
-    builder.Services.AddCustomizedIdentity(builder.Configuration);
-    builder.Services.AddHttpClient();
-    builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-    builder.Services.AddTransient(typeof(IRepositoryWithTypedId<,>), typeof(RepositoryWithTypedId<,>));
-    builder.Services.AddScoped<SlugRouteValueTransformer>();
+//     builder.Services.AddModules();
+//     builder.Services.AddCustomizedDataStore(builder.Configuration);
+//     builder.Services.AddCustomizedIdentity(builder.Configuration);
+//     builder.Services.AddHttpClient();
+//     builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+//     builder.Services.AddTransient(typeof(IRepositoryWithTypedId<,>), typeof(RepositoryWithTypedId<,>));
+//     builder.Services.AddScoped<SlugRouteValueTransformer>();
 
-    builder.Services.AddCustomizedLocalization();
+//     builder.Services.AddCustomizedLocalization();
 
-    builder.Services.AddCustomizedMvc(GlobalConfiguration.Modules);
-    builder.Services.Configure<RazorViewEngineOptions>(
-        options => { options.ViewLocationExpanders.Add(new ThemeableViewLocationExpander()); });
-    builder.Services.Configure<WebEncoderOptions>(options =>
-    {
-        options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
-    });
-    builder.Services.AddScoped<ITagHelperComponent, LanguageDirectionTagHelperComponent>();
-    builder.Services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
-    builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-Token");
-    builder.Services.AddCloudscribePagination();
+//     builder.Services.AddCustomizedMvc(GlobalConfiguration.Modules);
+//     builder.Services.Configure<RazorViewEngineOptions>(
+//         options => { options.ViewLocationExpanders.Add(new ThemeableViewLocationExpander()); });
+//     builder.Services.Configure<WebEncoderOptions>(options =>
+//     {
+//         options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
+//     });
+//     builder.Services.AddScoped<ITagHelperComponent, LanguageDirectionTagHelperComponent>();
+//     builder.Services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
+//     builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-Token");
+//     builder.Services.AddCloudscribePagination();
 
-    foreach (var module in GlobalConfiguration.Modules)
-    {
-        var moduleInitializerType = module.Assembly.GetTypes()
-           .FirstOrDefault(t => typeof(IModuleInitializer).IsAssignableFrom(t));
-        if ((moduleInitializerType != null) && (moduleInitializerType != typeof(IModuleInitializer)))
-        {
-            var moduleInitializer = (IModuleInitializer)Activator.CreateInstance(moduleInitializerType);
-            builder.Services.AddSingleton(typeof(IModuleInitializer), moduleInitializer);
-            moduleInitializer.ConfigureServices(builder.Services);
-        }
-    }
+//     foreach (var module in GlobalConfiguration.Modules)
+//     {
+//         var moduleInitializerType = module.Assembly.GetTypes()
+//            .FirstOrDefault(t => typeof(IModuleInitializer).IsAssignableFrom(t));
+//         if ((moduleInitializerType != null) && (moduleInitializerType != typeof(IModuleInitializer)))
+//         {
+//             var moduleInitializer = (IModuleInitializer)Activator.CreateInstance(moduleInitializerType);
+//             builder.Services.AddSingleton(typeof(IModuleInitializer), moduleInitializer);
+//             moduleInitializer.ConfigureServices(builder.Services);
+//         }
+//     }
 
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+//     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-    builder.Services.AddSwaggerGen(c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimplCommerce API", Version = "v1" });
-    });
-}
+//     builder.Services.AddSwaggerGen(c =>
+//     {
+//         c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimplCommerce API", Version = "v1" });
+//     });
+// }
 
 void Configure()
     { 
